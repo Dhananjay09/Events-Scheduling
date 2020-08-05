@@ -1,3 +1,28 @@
+1.Steps to install
+
+    Run the following commands
+
+    yarn add express
+
+  then run "cd client" to go inside the client folder
+
+  run the following command in client folder
+
+    1. yarn add @material-ui/core
+
+    2. yarn add @material-ui/icons
+
+2. Run "yarn start" in the root folder to start the server
+
+3. Run "yarn start" in the client folder(use cd client in diffrent terminal) to start the client server
+
+
+4. Make sure your mongodb server is already running. 
+
+5. Make sure to refresh the page if not reloaded.
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
