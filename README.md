@@ -1,16 +1,16 @@
 1.Steps to install
 
-    Run the following commands
+   Run the following commands
 
-    yarn add express
+                        yarn add express
 
   then run "cd client" to go inside the client folder
 
   run the following command in client folder
 
-    1. yarn add @material-ui/core
+                1. yarn add @material-ui/core
 
-    2. yarn add @material-ui/icons
+                2. yarn add @material-ui/icons
 
 2. Run "yarn start" in the root folder to start the server
 
