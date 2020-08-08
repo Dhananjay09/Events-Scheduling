@@ -42,7 +42,7 @@ app.use("/uploads", express.static("uploads"));
 app.use(express.static(path.join(__dirname, "/client/build")));
 
 app.use("/api", authRoutes);
-app.use("/api/users", authorize, userRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/file", imageRoutes);
 
 // The "catchall" handler: for any request that doesn't
