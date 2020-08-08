@@ -1,4 +1,4 @@
-Find the documentation for APIs published publically https://explore.postman.com/dhananjay0912
+Find the documentation for APIs published publically https://documenter.getpostman.com/view/12073920/T1LJjoFG?version=latest
 
 1.Steps to install
 
