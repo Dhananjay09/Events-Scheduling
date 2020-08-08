@@ -6,18 +6,17 @@ const Logger = require("../utils/logger");
 
 const AuthLogger = new Logger("users");
 
-const transport = nodemailer.createTransport({
+/*const transport = nodemailer.createTransport({
   host: "smtp.mailtrap.io",
   port: 2525,
   auth: {
     user: "3108c4b48ddc5d",
     pass: "536323607d8bae",
   },
-});
+});*/
 
 exports.signUp = (req, res) => {
   const { name, email, password } = req.body;
-
   User.findOne({ email }).exec((err, user) => {
     if (err) {
       return res.status(401).json({
@@ -34,10 +33,21 @@ exports.signUp = (req, res) => {
     const token = jwt.sign({ name, email, password }, process.env.JWT_ACCOUNT_ACTIVATION, {
       expiresIn: "10m",
     });
+    const newUser = new User({ name, email, password });
+    newUser.save((err, userData) => {
+      if (err) {
+        return res.status(400).json({
+          error: "Something went error.",
+        });
+      }
 
-    const activateLink = `${process.env.CLIENT_URL}/auth/activate/${token}`;
+      res.json({
+        message: `Hey ${name}, welcome to the app!!`,
+      });
+    });
+   // const activateLink = `${process.env.CLIENT_URL}/auth/activate/${token}`;
 
-    const emailData = {
+  /*  const emailData = {
       to: [
         {
           address: email,
@@ -77,11 +87,11 @@ exports.signUp = (req, res) => {
       res.json({
         message: `Email has been successfully sent to ${email}. Follow the instructions i the email to activate your account.`,
       });
-    });
+    });*/
   });
 };
 
-exports.activateAccount = (req, res) => {
+{/*exports.activateAccount = (req, res) => {
   const { token } = req.body;
 
   if (token) {
@@ -128,7 +138,7 @@ exports.activateAccount = (req, res) => {
     error: "The token is invalid",
   });
 };
-
+*/}
 exports.signIn = (req, res) => {
   const { email, password } = req.body;
 
@@ -182,7 +192,7 @@ exports.forgotPassword = (req, res) => {
     const token = jwt.sign({ _id: user._id, name: user.name }, process.env.JWT_RESET_PASSWORD, {
       expiresIn: "10m",
     });
-
+    
     const link = `${process.env.CLIENT_URL}/auth/password/reset/${token}`;
 
     const emailData = {
@@ -220,17 +230,10 @@ exports.forgotPassword = (req, res) => {
 };
 
 exports.resetPassword = (req, res) => {
-  const { resetPasswordLink, newPassword } = req.body;
+  const { email, newPassword } = req.body;
 
-  if (resetPasswordLink) {
-    return jwt.verify(resetPasswordLink, process.env.JWT_RESET_PASSWORD, (err) => {
-      if (err) {
-        return res.status(400).json({
-          error: "Expired link. Try again.",
-        });
-      }
-
-      User.findOne({ resetPasswordLink }).exec((err, user) => {
+  if (email) {
+      User.findOne({ email }).exec((err, user) => {
         if (err || !user) {
           return res.status(400).json({
             error: "Somethig went wrong. Try later",
@@ -239,7 +242,6 @@ exports.resetPassword = (req, res) => {
 
         const updateFields = {
           password: newPassword,
-          resetPasswordLink: "",
         };
 
         user = _.extend(user, updateFields);
@@ -256,10 +258,5 @@ exports.resetPassword = (req, res) => {
           });
         });
       });
-    });
+    };
   }
-
-  return res.status(400).json({
-    error: "We have not received the reset password link",
-  });
-};
